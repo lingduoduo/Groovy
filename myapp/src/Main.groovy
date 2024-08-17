@@ -17,8 +17,20 @@ class Department {
   String deptName
   Set<Person> staff = [
           new Person(name: 'Matt', age: 30, job: new Job(roleName: 'Developer', salary: 1000)),
-          new Person(name: 'Ling', age: 30, job: new Job(roleName: 'MLE', salary: 1000))
+          new Person(name: 'Ling', age: 30, job: new Job(roleName: 'MLE', salary: 1000)),
+          new Person(name: 'Emily')
   ]
+}
+
+@groovy.transform.ToString
+class FoodOrder {
+  String name
+  BigDecimal cost
+
+  FoodOrder(name, cost) {
+    this.name = name
+    this.cost = cost
+  }
 }
 
 static void main(String[] args) {
@@ -28,5 +40,30 @@ static void main(String[] args) {
 
   def dept = new Department(deptName: "Engineering")
   println dept
-  println "Salary: ${dept.staff[1].job.salary}"
+  println "Salary: ${dept?.staff[2]?.job?.salary}"
+
+  def driveThruOrder = [
+          new FoodOrder('Burger', 3.99),
+          new FoodOrder('Fries', 1.99),
+          new FoodOrder('Milkshake', 2.75)
+  ]
+
+  def loggedInUser = 'Adam'
+  def displayUsername = loggedInUser ?: 'Guest'
+
+  def l = ['black', 'white', 'blue', 'red']
+  println l.sort()
+  println l.sort {a, b ->  b <=> a}
+
+  println driveThruOrder.sort {a, b -> a.name <=> b.name}
+  println driveThruOrder.sort {a, b -> a.cost <=> b.cost}
+
+  def fruits = ['apple', 'orange', 'pears']
+  def shoppingList = ['milk', *fruits]
+  println shoppingList
+  println shoppingList*.toUpperCase()
+
+  println (1..5)
+
 }
+
