@@ -33,13 +33,11 @@ class FoodOrder {
   }
 }
 
-<<<<<<< HEAD
-=======
 enum Weekdays {
   MON, TUE, WED,
 }
 
->>>>>>> a256169 (add code)
+
 static void main(String[] args) {
   def s = "Hello"
   println s.toUpperCase()
@@ -80,5 +78,20 @@ static void main(String[] args) {
   def re = ~/S.*/
   def matcher = re.matcher('Sweet')
   println matcher.matches()
+
+  println (1.0..5.0).each { println it}
+// Range from TUE to WED (exclusive)
+  (Weekdays.TUE..<Weekdays.WED).each { println it }
+
+  def ss = 'how are you?'
+  println ss.getClass()
+
+  def re = ~/S.*/
+  def matcher = re.matcher('Sweet')
+  println matcher.matches()
+
+  def matcher2 = ('Suger' =~ /S.*/)
+  println matcher2.matches()
+
 }
 
