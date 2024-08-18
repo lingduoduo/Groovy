@@ -71,7 +71,7 @@ static void main(String[] args) {
   println (1.0..5.0).each { println it}
 // Range from TUE to WED (exclusive)
   (Weekdays.TUE..<Weekdays.WED).each { println it }
-  
+
   def ss = 'how are you?'
   println ss.getClass()
 
@@ -82,5 +82,12 @@ static void main(String[] args) {
   def matcher2 = ('Suger' =~ /S.*/)
   println matcher2.matches()
 
+  def matcher3 = ('Tuger' ==~ /S.*/)
+  println matcher3
+
+  def sss = "Sunday is my favorite day!"
+  def matchResult = (sss =~ /(.*) is (.*) favorite day!/)
+  println matchResult[0][1]
+  println matchResult[0][2]
 }
 
