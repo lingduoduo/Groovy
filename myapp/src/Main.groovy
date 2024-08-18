@@ -38,6 +38,7 @@ enum Weekdays {
 }
 
 
+
 static void main(String[] args) {
   def s = "Hello"
   println s.toUpperCase()
@@ -89,5 +90,11 @@ static void main(String[] args) {
   def matchResult = (sss =~ /(.*) is (.*) favorite day!/)
   println matchResult[0][1]
   println matchResult[0][2]
+
+  def il = [1, 2, 3, 4]
+  println il.each { println it}
+  println il[0..2]
+
+  def map = [fruits: ['apple', 'banana'], vegetables: ['apple', 'banana']]
 }
 
