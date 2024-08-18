@@ -26,7 +26,6 @@ class Department {
 class FoodOrder {
     String name
     BigDecimal cost
-
     FoodOrder(name, cost) {
         this.name = name
         this.cost = cost
@@ -36,7 +35,6 @@ class FoodOrder {
 enum Weekdays {
     MON, TUE, WED,
 }
-
 
 static void main(String[] args) {
     def s = "Hello"
@@ -85,14 +83,14 @@ static void main(String[] args) {
     def matcher3 = ('Tuger' ==~ /S.*/)
     println matcher3
 
-    def sss = "Sunday is my favorite day!"
-    def matchResult = (sss =~ /(.*) is (.*) favorite day!/)
+    def s1 = "Sunday is my favorite day!"
+    def matchResult = (s1 =~ /(.*) is (.*) favorite day!/)
     println matchResult[0][1]
     println matchResult[0][2]
 
-    def il = [1, 2, 3, 4]
-    println il.each { println it }
-    println il[0..2]
+    def i_list = [1, 2, 3, 4]
+    println i_list.each { println it }
+    println i_list[0..2]
 
     def map = [fruits: ['apple', 'banana'], vegetables: ['apple', 'banana']]
 
