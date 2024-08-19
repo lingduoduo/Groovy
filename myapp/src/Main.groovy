@@ -60,6 +60,9 @@ static void main(String[] args) {
 
     println driveThruOrder.sort { a, b -> a.name <=> b.name }
     println driveThruOrder.sort { a, b -> a.cost <=> b.cost }
+    driveThruOrder.findAll {it.cost >= 2.0 }.each {it -> println 'Name: ' + it.name}
+    driveThruOrder.find {it.cost >= 2.0 }.each {it -> println 'Name: ' + it.name}
+    driveThruOrder.collectEntries {[(it.cost): it.name]}.each {println it.key}
 
     def fruits = ['apple', 'orange', 'pears']
     def shoppingList = ['milk', *fruits]
@@ -88,11 +91,28 @@ static void main(String[] args) {
     println matchResult[0][1]
     println matchResult[0][2]
 
-    def i_list = [1, 2, 3, 4]
-    println i_list.each { println it }
+    def i_list = [1, 2, 3, 4, 10]
     println i_list[0..2]
+    println i_list.each { println it }
+    println i_list.eachWithIndex { int entry, int i -> println 'element: ' + i + ', entry: ' + entry }
+    println i_list.findAll { it % 2 == 1 }
+    println i_list.find { it % 2 == 1 }
+    println i_list.min()
+    println i_list.inject(0) { sum, e -> sum + e}
+    println i_list.inject(0) { max, e -> Math.max(max, e)}
 
-    def map = [fruits: ['apple', 'banana'], vegetables: ['apple', 'banana']]
+    def c_list = ['Tom', 'Dick', 'Harry']
+    println c_list.findAll {it.startsWith('T')}
+    println c_list.every {it.startsWith('T')}
+    println c_list.any {it.startsWith('T')}
+    println c_list.collect {it.size()}
+
+    def map = [
+            fruits: ['apple', 'banana'],
+            vegetables: ['apple', 'banana']
+    ]
+    println map['fruits'][0]
+    map.each {k, v -> println "$k = $v" }
 
 }
 
