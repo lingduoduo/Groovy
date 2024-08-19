@@ -6,10 +6,41 @@ class Job {
     int salary
 }
 
+@groovy.transform.ToString
 class Person {
     String name
     int age
     Job job
+
+    // Constructor with all parameters
+    Person(String name, int age, Job job) {
+        this.name = name
+        this.age = age
+        this.job = job
+    }
+
+    // Constructor with name and age only
+    Person(String name, int age) {
+        this(name, age, null) // Call the other constructor, passing null for job
+    }
+
+    void greet() {
+        println "Hello, I'm $name"
+    }
+}
+
+@groovy.transform.ToString
+class Employee extends Person {
+    int salary
+
+    Employee(String name, int age, Job job) {
+        super(name, age, job)
+        this.salary = job?.salary // Assigning salary from Job
+    }
+
+    def reportForWork() {
+        'Hello Employee'
+    }
 }
 
 @groovy.transform.ToString
@@ -18,7 +49,7 @@ class Department {
     Set<Person> staff = [
             new Person(name: 'Matt', age: 30, job: new Job(roleName: 'Developer', salary: 1000)),
             new Person(name: 'Ling', age: 30, job: new Job(roleName: 'MLE', salary: 1000)),
-            new Person(name: 'Emily')
+            new Person(name: 'Emily', age: 30)
     ]
 }
 
@@ -26,6 +57,7 @@ class Department {
 class FoodOrder {
     String name
     BigDecimal cost
+
     FoodOrder(name, cost) {
         this.name = name
         this.cost = cost
@@ -44,6 +76,10 @@ static void main(String[] args) {
     def dept = new Department(deptName: "Engineering")
     println dept
     println "Salary: ${dept?.staff[2]?.job?.salary}"
+
+    Employee employee = new Employee(name: 'Ling', age: 30, job: new Job(roleName: 'MLE', salary: 1000))
+    employee.greet()
+    println employee.reportForWork()
 
     def driveThruOrder = [
             new FoodOrder('Burger', 3.99),
@@ -70,8 +106,18 @@ static void main(String[] args) {
     println shoppingList*.toUpperCase()
 
     println(1.0..5.0).each { println it }
-// Range from TUE to WED (exclusive)
     (Weekdays.TUE..<Weekdays.WED).each { println it }
+
+    def name = 'John'
+    def emailText = """
+        Dear $name,
+        We are pleased to inform you that you have been selected for the position of roleName.
+        Your salary will be salary.
+        Regards,
+        HR
+        """
+    println emailText
+
 
     def ss = 'how are you?'
     println ss.getClass()
@@ -113,6 +159,8 @@ static void main(String[] args) {
     ]
     println map['fruits'][0]
     map.each {k, v -> println "$k = $v" }
+
+
 
 }
 
