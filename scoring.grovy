@@ -1,0 +1,129 @@
+package com.adp.lifion.rerank
+
+import com.adp.lifion.process.ContextImpl
+import com.adp.lifion.process.people.PeopleStage
+import com.lucidworks.querying.api.Context
+import com.lucidworks.querying.api.QueryRequest
+import com.lucidworks.querying.api.QueryRequestResponse
+import com.lucidworks.querying.api.QueryResponse
+import com.lucidworks.querying.sdk.test.TestQueryRequest
+import com.lucidworks.querying.sdk.test.TestQueryRequestResponse
+import com.lucidworks.querying.sdk.test.TestQueryResponse
+import com.lucidworks.querying.api.Document;
+
+
+class Scoring {
+    static void main(String[] args) {
+        def baseDir = System.getProperty("user.dir")
+        println "Base Directory: $baseDir"
+//        def csvFile = new File(baseDir, '/src/test/groovy/com/adp/lifion/rerank/top10_people.csv')
+        def csvFile = new File(baseDir, '/src/test/groovy/com/adp/lifion/rerank/people_df.csv')
+        def lines = csvFile.readLines()
+
+        // Parse the header and data rows
+        def headers = lines[0].split(",")
+        def colname2idx = [:]
+        headers.eachWithIndex { header, index ->
+            colname2idx[index] = header.trim()
+        }
+        println "Column Names: ${colname2idx}"
+
+
+        // Group data by detailed search value, i.e., query
+        def dataRows = lines.drop(1)
+        def groupedData = dataRows.collect { line ->
+            def values = line.split(",")
+            def rows = [:]
+            headers.eachWithIndex { header, index ->
+                rows[header.trim()] = values[index].trim()
+            }
+            return rows
+        }.groupBy { it['details_search_value'] }
+
+        // Process each query
+        groupedData.each { query, entries ->
+//            println "details_search_value: ${query}"
+            List<Document> docs = []
+            entries.eachWithIndex { entry, index ->
+
+                DocumentImpl doc = new DocumentImpl()
+                Map<String, FieldImpl> fields = new HashMap<>()
+//                println "row id and resPos: ${entry['id']}"
+                fields.put('id', new FieldImpl('id', entry['id']))
+
+//                println "displayName: ${entry['displayName']}"
+                fields.put('displayName', new FieldImpl('displayName', entry['displayName']))
+
+                entry['legalName'] = entry['legalName'].toLowerCase()
+//                println "legalName: ${entry['legalName']}"
+                fields.put('legalName_s', new FieldImpl("legalName_s", entry['legalName']))
+
+//                println "eid: ${entry['eID'].toLowerCase()}"
+                entry['eID'] = entry['eID'].toLowerCase();
+                fields.put('eID_s', new FieldImpl("eID_s", entry['eID']))
+
+                entry['status'] = entry['status'].toLowerCase()
+//                println "workerStatus: ${entry['status']}"
+                fields.put("workerStatus_s", new FieldImpl("workerStatus_s", entry['status']))
+
+                entry['statusSubType'] = entry['statusSubType'].toLowerCase()
+//                println "workerStatusSubType: ${entry['statusSubType']}"
+                fields.put("workerStatusSubType_s", new FieldImpl("workerStatusSubType_s", entry['statusSubType']))
+
+//                println "statusStartDate: ${entry['statusStartDate']}"
+                entry['statusStartDate'] = entry['statusStartDate'].toString().replace("T", " ").replace("Z", "")
+                fields.put("statusStartDate_dt", new FieldImpl("statusStartDate_dt", entry['statusStartDate']))
+
+                fields.put("authGroup_legalName_ss", new FieldImpl("authGroup_legalName_ss", "L1"))
+                fields.put("authGroup_eID_ss", new FieldImpl("authGroup_eID_ss", "E1"))
+                fields.put("authGroup_workerStatus_ss", new FieldImpl("authGroup_workerStatus_ss", "W1"))
+
+                Double solrScore = 0.0
+                fields.put("solrScore", new FieldImpl("solrScore", solrScore))
+
+                Double docScore = 0.0
+                fields.put("score", new FieldImpl("score", docScore))
+                doc.setFields(fields)
+
+                docs.add(doc)
+            }
+
+            QueryRequest queryRequest = new TestQueryRequest()
+            QueryResponse queryResponse = new TestQueryResponse()
+            QueryRequestResponse queryRequestResponse = new TestQueryRequestResponse(queryRequest, queryResponse)
+            queryResponse.updateDocuments(docs)
+
+            queryRequest.setParam("oldq", query)
+            queryRequest.setParam("userID", "test-user")
+
+            Context context = new ContextImpl()
+            PeopleStage peopleStage = new PeopleStage()
+
+            def outputFile = new File(baseDir, "/src/test/groovy/com/adp/lifion/rerank/people_df_scores.csv")
+            outputFile.withWriterAppend('UTF-8') { writer ->
+                if (outputFile.length() == 0) {
+//                    writer.write("query,ids,displayName,eID_s,workerStatus_s,workerStatusSubType_s,statusStartDate_dt,score\n")
+                    writer.write("query,ids,solr_score,score\n")
+                }
+
+                def queryRequestResponseResult = peopleStage.process(queryRequestResponse, context)
+
+                queryRequestResponseResult.getQueryResponse().get().getDocuments().each { doc ->
+//                    doc.fields.each {println it}
+                    def ids = doc.getField('id').get().getValues().toArray()[0].toString().replace(',', '\\,')
+//                    def names = doc.getField('displayName').get().getValues().toArray()[0].toString().replace(',', '\\,')
+//                    def eID = doc.getField('eID_s').get().getValues().toArray()[0].toString().replace(',', '\\,')
+//                    def status = doc.getField('workerStatus_s').get().getValues().toArray()[0].toString().replace(',', '\\,')
+//                    def statusSubType = doc.getField('workerStatusSubType_s').get().getValues().toArray()[0].toString().replace(',', '\\,')
+//                    def statusStartDate_dt = doc.getField('statusStartDate_dt').get().getValues().toArray()[0].toString().replace(',', '\\,')
+                    def solr_scores = doc.getField('solrScore').get().getValues().toArray()[0].toString().replace(',', '\\,')
+                    def scores = doc.getField('score').get().getValues().toArray()[0].toString().replace(',', '\\,')
+
+//                    writer.write("${query},${ids},${names},${eID},${status},${statusSubType},${statusStartDate_dt},${scores}\n")
+                    writer.write("${query},${ids},${solr_scores},${scores}\n")
+                }
+            }
+        }
+    }
+}
+
