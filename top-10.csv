@@ -1,0 +1,10 @@
+details_search_value,displayName,eID,legalName,location,mainPosition,status,statusSubType,statusStartDate,resPos,id
+76567007,Test Units,76567007,Test org Units,Mexico Location,Business Operations,Active,nan,2024-07-17T00:00:00Z,0,0_0
+876981239,US TestHire,876981239,US TestHire,Mexico Location,Lifion Celergo Maximals,Active,nan,2023-11-03T00:00:00Z,0,1_0
+546787,Raju M,546787,Raju M,Mexico Location,Business Development,Active,Terminated,2024-08-01T00:00:00Z,0,2_0
+Azerbaijan,KMDefaultEmp AJQJ AMAZONCSV,246464103,KMDefaultEmp AJQJ AMAZONCSV,nan,JobTemplate1,Active,nan,2023-08-22T00:00:00Z,49,3_49
+Azerbaijan,KMDefaultEmp AVXY AMAZONCSV,377705363,KMDefaultEmp AVXY AMAZONCSV,nan,JobTemplate1,Active,nan,2023-08-22T00:00:00Z,48,4_48
+Azerbaijan,KMDefaultEmp ALKO ALLDOmains,454962269,KMDefaultEmp ALKO ALLDOmains,nan,JobTemplate1,Active,nan,2023-08-22T00:00:00Z,47,5_47
+Azerbaijan,KMDefaultEmp ARFK ALLDOmains,378208805,KMDefaultEmp ARFK ALLDOmains,nan,JobTemplate1,Active,nan,2023-08-22T00:00:00Z,46,6_46
+Azerbaijan,KMDefaultEmp AOCZ ALLDOmains,207936672,KMDefaultEmp AOCZ ALLDOmains,nan,JobTemplate1,Active,nan,2023-08-22T00:00:00Z,45,7_45
+Azerbaijan,KMDefaultEmp AEVM ALLDOmains,350929914,KMDefaultEmp AEVM ALLDOmains,nan,JobTemplate1,Active,nan,2023-08-22T00:00:00Z,44,8_44
