@@ -1,10 +1,12 @@
 # Java
 
-## Run the Java example
+## Requirements
 
 Java 17 or newer is required.
 
-From the repository root, compile and run the example with:
+## Run the Lambda example
+
+From the repository root, compile and run it with:
 
 ```bash
 javac -d jvm jvm/lambda/LambdaDemo.java
@@ -15,6 +17,21 @@ Run the smoke test with:
 
 ```bash
 bash jvm/lambda/test_lambda.sh
+```
+
+## Run the Stream API example
+
+From the repository root, compile and run it with:
+
+```bash
+javac -d jvm jvm/streamapi/StreamDemo.java
+java -cp jvm streamapi.StreamDemo
+```
+
+Run the smoke test with:
+
+```bash
+bash jvm/streamapi/test_streamapi.sh
 ```
 
 Disclaimer
