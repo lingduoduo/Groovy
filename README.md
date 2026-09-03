@@ -34,6 +34,21 @@ Run the smoke test with:
 bash jvm/streamapi/test_streamapi.sh
 ```
 
+## Run the DateTime example
+
+From the repository root, compile and run it with:
+
+```bash
+javac -d jvm jvm/localdatetime/DateTimeDemo.java
+java -cp jvm localdatetime.DateTimeDemo
+```
+
+Run the smoke test with:
+
+```bash
+bash jvm/localdatetime/test_localdatetime.sh
+```
+
 Disclaimer
 
 This repository and its contents are collected and shared solely for academic and research purposes.
